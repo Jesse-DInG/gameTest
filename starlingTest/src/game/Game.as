@@ -9,18 +9,26 @@ package game
 	import game.charactor.BaseCharactor;
 	import game.charactor.CharactorManager;
 	
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.extensions.PDParticleSystem;
+	import starling.extensions.ParticleSystem;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
 	public class Game extends Sprite
 	{
+		public static var $stage:Stage;
 		private var _charactor:BaseCharactor;
 		private var _keyDowns:Dictionary = new Dictionary();
+		
+		private var _particleSystem:PDParticleSystem;
+		
 		private var _isKeyPress:Boolean;
 		public function Game()
 		{
@@ -41,19 +49,36 @@ package game
 		private function init(event:Event = null):void
 		{
 			// TODO Auto Generated method stub
+			$stage = stage;
 			_charactor = new BaseCharactor("henry");
 			_charactor.x = stage.stageWidth/2;
 			_charactor.y = stage.stageHeight/2;
 			_charactor.addEventListener("attack",__attack);
 			addChild(_charactor);
 			
-			var arra:Arrow = new Arrow("henry");
-			arra.x = 100;
-			arra.y= 100;
-			addChild(arra);
+//			var arra:Arrow = new Arrow("henry");
+//			arra.x = 100;
+//			arra.y= 100;
+//			addChild(arra);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,__keyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP,__keyUp);
+			initParticle();
+		}
+		
+		private function initParticle():void
+		{
+				var fireConfig:XML = XML(new GameConstants.FireConfig());
+				var fireTexture:Texture = Texture.fromBitmap(new GameConstants.FireParticle());
+				if(!_particleSystem)
+				_particleSystem = new PDParticleSystem(fireConfig, fireTexture);
+//				_particleSystem
+				//				mParticleSystem.emitterX = Math.ceil(_mc.width/2);
+				//				mParticleSystem.emitterY = Math.ceil(_mc.height/2);
+//				_particleSystem.start();
+				
+				addChild(_particleSystem);
+				Starling.juggler.add(_particleSystem);
 		}
 		
 		private function __attack(evt:Event):void
@@ -64,6 +89,10 @@ package game
 			arra.side = ch.side;
 			arra.x = ch.x+ch.side*20;
 			arra.y = ch.y;
+//			_particleSystem.stop();
+//			_particleSystem.removeFromParent();
+//			arra.addChild(_particleSystem);
+//			_particleSystem.start();
 			addChild(arra);
 		}
 		

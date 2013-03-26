@@ -30,5 +30,10 @@ package game
 		public static const ARROW_HEIGHT:int = 48;
 		
 		public static const ARROW_NORMAL:String = "arrowN_";
+		
+		[Embed(source="../media/particle.pex", mimeType="application/octet-stream")]
+		public static const FireConfig:Class;
+		[Embed(source = "../media/texture.png")]
+		public static const FireParticle:Class;
 	}
 }
